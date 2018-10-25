@@ -3,5 +3,10 @@
 <p> <%= activities.name %> </p>
 <img src="<%= activities.image %>">
 <p> <%= activities.describtion %> </p>
+<% activities.comments.forEach(function(comment){ %>
+    <p>
+        <b><%= comment.author %></b> - <%= comment.text %>
+    </p>
+<% }) %> 
 
 <% include partials/footer.ejs %>

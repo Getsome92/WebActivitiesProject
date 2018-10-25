@@ -2,48 +2,12 @@ var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose")
+    Activity = require("./models/activity")
+    seedDB   = require("./seeds")
 
-mongoose.connect("mongodb://localhost:27017/activities", {
-    useNewUrlParser: true
-});
 
-// Instead of making the hard coded array, use MongoDB to store data
-// var activities = [{
-//         name: "Laser Tag",
-//         image: "https://cdn.pixabay.com/photo/2016/03/25/14/19/paintball-1278895__340.jpg"
-//     },
-//     {
-//         name: "Gokarts",
-//         image: "https://cdn.pixabay.com/photo/2016/10/20/03/00/kart-1754533__340.jpg"
-//     },
-//     {
-//         name: "Vodka",
-//         image: "https://cdn.pixabay.com/photo/2017/08/03/21/48/drinks-2578446__340.jpg"
-//     }
-// ]
-
-// Schema setup
-
-var activitiesSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    describtion: String
-});
-
-var Activity = mongoose.model("Activity", activitiesSchema);
-// Activity.create({
-//     name: "Gokarts",
-//     image: "https://cdn.pixabay.com/photo/2016/10/20/03/00/kart-1754533__340.jpg",
-//     describtion: "Twoja matka chcialaby to robic"
-// }, function (err, activity) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log("New Activity Added!");
-//         console.log(activity);
-//     }
-// });
-
+mongoose.connect("mongodb://localhost:27017/activities", {useNewUrlParser: true});
+seedDB();
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
@@ -93,10 +57,11 @@ app.get("/activities/new", function (req, res) {
 
 app.get("/activities/:id", function(req,res){
 
-    Activity.findById(req.params.id, function(err, foundActivity){
+    Activity.findById(req.params.id).populate("comments").exec(function(err, foundActivity){
         if(err){
             console.log(err)
         } else {
+            console.log(foundActivity);
             res.render("show", {activities: foundActivity});
         }
     });
