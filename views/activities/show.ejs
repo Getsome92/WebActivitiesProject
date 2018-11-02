@@ -14,8 +14,19 @@
                 <img class="img-responsive" src="<%= activities.image %>">
                 <div class="caption-full">
                     <h4 class="pull-right">10 PLN/15 min</h4>
-                    <h4><a><%= activities.name %></a></h4>
-                    <p><%= activities.describtion %></p>
+                    <h4><a>
+                            <%= activities.name %></a></h4>
+                    <p>
+                        <%= activities.describtion %>
+                    </p>
+                    <p><em>Added by
+                            <%= activities.author.username %></em></p>
+                <% if(currentUser && activities.author.id.equals(currentUser._id)){ %>
+                    <a class="btn btn-xs btn-warning" href="/activities/<%=activities._id%>/edit">Edit</a>
+                    <form id="deleteBtn" action="/activities/<%=activities._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-xs btn-danger">Delete</button>
+                    </form>
+                <% } %>
                 </div>
             </div>
             <div class="well">
@@ -24,13 +35,22 @@
                 </div>
                 <hr>
                 <% activities.comments.forEach(function(comment){ %>
-                    <div class="row">
-                        <div class="col-md-12">
-                                <b><%= comment.author %></b>
-                                <span class="pull-right">X days ago</span>
-                                <p><%= comment.text %></p>
-                        </div>
-                    </div>                
+                <div class="row">
+                    <div class="col-md-12">
+                        <b>
+                            <%= comment.author.username %></b>
+                        <span class="pull-right">X days ago</span>
+                        <p>
+                            <%= comment.text %>
+                        </p>
+                        <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                        <a class="btn btn-xs btn-warning" href="/activities/<%= activities._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                    <form id="deleteBtn" action="/activities/<%=activities._id%>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                    </form>
+                    <% } %>
+                    </div>
+                </div>
                 <% }) %>
             </div>
         </div>

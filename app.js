@@ -7,22 +7,25 @@ var express = require("express"),
     Activity = require("./models/activity"),
     Comment = require("./models/comment"),
     User = require("./models/user"),
-    seedDB = require("./seeds")
+    methodOverride = require("method-override"),
+    seedDB = require("./seeds");
 
 var commentRoutes = require("./routes/comments"),
     activitiesRoutes = require("./routes/activities"),
-    indexRoutes = require("./routes/index")
+    indexRoutes = require("./routes/index");
 
 mongoose.connect("mongodb://localhost:27017/activities", {
     useNewUrlParser: true
 });
+
 seedDB();
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
-
+app.use(methodOverride("_method"));
 // PASSPORT
 
 app.use(require("express-session")({

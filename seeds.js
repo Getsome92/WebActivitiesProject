@@ -17,34 +17,34 @@ var data = [{
 }]
 
 function seedDB() {
-    Activity.remove({}, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("All activities are removed")
-            data.forEach(function (seed) {
-                Activity.create(seed, function (err, activity) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log("Activity added");
-                        Comment.create({
-                            text: "This is a comment",
-                            author: "Mother"
-                        }, function (err, comment) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                activity.comments.push(comment);
-                                activity.save();
-                                console.log("created new comment");
-                            }
-                        });
-                    }
-                });
+    // Activity.remove({}, function (err) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         console.log("All activities are removed")
+    //         data.forEach(function (seed) {
+    //             Activity.create(seed, function (err, activity) {
+    //                 if (err) {
+    //                     console.log(err);
+    //                 } else {
+    //                     console.log("Activity added");
+    //                     Comment.create({
+    //                         text: "This is a comment",
+    //                         author: "Mother"
+    //                     }, function (err, comment) {
+    //                         if (err) {
+    //                             console.log(err);
+    //                         } else {
+    //                             activity.comments.push(comment);
+    //                             activity.save();
+    //                             console.log("created new comment");
+    //                         }
+    //                     });
+    //                 }
+    //             });
 
-            });
-        }
-    });
+    //         });
+    //     }
+    // });
 }
 module.exports = seedDB;
